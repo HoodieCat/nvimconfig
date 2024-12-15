@@ -296,6 +296,10 @@ require('lazy').setup({
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
           end
+          --use clangd builtin command to switch Header/Source
+          if client and client.supports_method(vim.lsp.protocol.textDocument_switchHeaderSource) then
+            map('<M-o>', '<cmd>ClangdSwitchSourceHeader<CR>', 'Swithc Source/Header')
+          end
         end,
       })
 
