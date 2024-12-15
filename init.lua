@@ -5,13 +5,7 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 vim.opt.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
-
--- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
-
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
@@ -84,8 +78,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
-  -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -226,8 +218,6 @@ require('lazy').setup({
 
   -- LSP Plugins
   {
-    -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-    -- used for completion, annotations and signatures of Neovim apis
     'folke/lazydev.nvim',
     --tf means filetype
     ft = 'lua',
@@ -244,11 +234,11 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
+      { 'williamboman/mason.nvim', config = true },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
-      -- Useful status updates for LSP.
+      -- Useful status updates for LSP. show the status of the loading info at the right corner
       { 'j-hui/fidget.nvim', opts = {} },
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -276,7 +266,6 @@ require('lazy').setup({
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
           --    See `:help CursorHold` for information about when this is executed
-          --
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
@@ -344,18 +333,15 @@ require('lazy').setup({
         },
       }
 
-      -- Ensure the servers and tools above are installed
-      --  To check the current status of installed tools and/or manually install
-      --  other tools, you can run
-      --    :Mason
-      --
+      --  :Mason
       --  You can press `g?` for help in this menu.
       require('mason').setup()
 
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
+        -- You can add other tools here that you want Mason to install
+        -- for you, so that they are available from within Neovim.
+        -- the same as line 315 but use the default config
         'stylua', -- Used to format Lua code
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -476,24 +462,13 @@ require('lazy').setup({
           -- Scroll the documentation window [b]ack / [f]orward
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-
-          -- Accept ([y]es) the completion.
-          --  This will auto-import if your LSP supports it.
-          --  This will expand snippets if the LSP sent a snippet.
           ['<C-y>'] = cmp.mapping.confirm { select = true },
 
-          -- If you prefer more traditional completion keymaps,
-          -- you can uncomment the following lines
-          --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.select_next_item(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
-
-          -- Think of <c-l> as moving to the right of your snippet expansion.
+          -- Think of <alt+n> as moving to the right of your snippet expansion.
           --  So if you have a snippet that's like:
           --  function $name($args)
           --    $body
           --  end
-          --
           -- <M-l> will move you to the right of each of the expansion locations.
           -- <M-h> is similar, except moving you backwards.
           ['<M-n>'] = cmp.mapping(function()
@@ -568,19 +543,26 @@ require('lazy').setup({
   --markdownpreview
   { require 'kickstart.plugins.markdown_preview' },
   {
-    -- 'ggandor/leap.nvim',
-    -- dependencies = { 'tpope/vim-repeat' },
-    -- config = function()
-    --   require('leap').create_default_mappings()
-    -- end,
-
-    'tpope/vim-surround',
+    'ggandor/leap.nvim',
+    dependencies = { 'tpope/vim-repeat' },
+    config = function()
+      require('leap').create_default_mappings()
+    end,
   },
+  --surround plugins
+  {
+    'tpope/vim-surround',
+    dependencies = 'tpope/vim-repeat',
+  },
+  -- Detect tabstop and shiftwidth automatically
+  'tpope/vim-sleuth',
+  --input method
+  require 'kickstart.plugins.im-select',
   --lint for navagation
-  require 'kickstart.plugins.indent_line',
+  -- require 'kickstart.plugins.indent_line',
   -- { import = 'custom.plugins' },
   -- plugins with accustomed config
-  require 'kickstart.plugins.lint',
+  -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns',

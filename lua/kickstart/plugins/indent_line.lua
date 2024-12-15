@@ -4,7 +4,7 @@ return {
     -- See `:help ibl`
     main = 'ibl',
     opts = {
-      exclude = { filetypes = { 'dashboard' } },
+      exclude = { filetypes = { 'dashboard', 'markdown' } },
     },
   },
 }
