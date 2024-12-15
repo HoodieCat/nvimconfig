@@ -99,38 +99,7 @@ require('lazy').setup({
         mappings = vim.g.have_nerd_font,
         -- If you are using a Nerd Font: set icons.keys to an empty table which will use the
         -- default which-key.nvim defined Nerd Font icons, otherwise define a string table
-        keys = vim.g.have_nerd_font and {} or {
-          Up = '<Up> ',
-          Down = '<Down> ',
-          Left = '<Left> ',
-          Right = '<Right> ',
-          C = '<C-…> ',
-          M = '<M-…> ',
-          D = '<D-…> ',
-          S = '<S-…> ',
-          CR = '<CR> ',
-          Esc = '<Esc> ',
-          ScrollWheelDown = '<ScrollWheelDown> ',
-          ScrollWheelUp = '<ScrollWheelUp> ',
-          NL = '<NL> ',
-          BS = '<BS> ',
-          Space = '<Space> ',
-          Tab = '<Tab> ',
-          F1 = '<F1>',
-          F2 = '<F2>',
-          F3 = '<F3>',
-          F4 = '<F4>',
-          F5 = '<F5>',
-          F6 = '<F6>',
-          F7 = '<F7>',
-          F8 = '<F8>',
-          F9 = '<F9>',
-          F10 = '<F10>',
-          F11 = '<F11>',
-          F12 = '<F12>',
-        },
       },
-
       -- Document existing key chains
       spec = {
         { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
@@ -171,7 +140,6 @@ require('lazy').setup({
           },
         },
       }
-
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
@@ -195,8 +163,9 @@ require('lazy').setup({
       -- use <C-/> to search current buffer fuzzily
       vim.keymap.set('n', '<leader>/', function()
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 10,
+          winblend = 0,
           previewer = false,
+          -- prompt_title = fuzzy find current buffer
         })
       end, { desc = '[/] Fuzzily search in current buffer' })
 
@@ -258,7 +227,6 @@ require('lazy').setup({
           map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
           map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
           map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -337,7 +305,6 @@ require('lazy').setup({
         },
       }
 
-      --  :Mason
       --  You can press `g?` for help in this menu.
       require('mason').setup()
 
@@ -550,7 +517,14 @@ require('lazy').setup({
     'ggandor/leap.nvim',
     dependencies = { 'tpope/vim-repeat' },
     config = function()
-      require('leap').create_default_mappings()
+      -- require('leap').create_default_mappings()
+      local map = function(mode, key, cmd)
+        vim.keymap.set(mode, key, cmd)
+      end
+      map('n', 'f', '<Plug>(leap)')
+      map('n', 'F', '<Plug>(leap-from-windows)')
+      map({ 'x', 'o' }, 'f', '<Plug>(leap-forward)')
+      map({ 'x', 'o' }, 'F', '<Plug>(leap-backward)')
     end,
   },
   --surround plugins
@@ -562,11 +536,20 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   --input method
   require 'kickstart.plugins.im-select',
-  --lint for navagation
+  --navagation
   require 'kickstart.plugins.indent_line',
   -- { import = 'custom.plugins' },
   -- plugins with accustomed config
-  -- require 'kickstart.plugins.lint',
+  {
+    'hedyhli/outline.nvim',
+    config = function()
+      vim.keymap.set('n', '<leader>o', '<cmd>Outline<CR>', { desc = 'Toggle Outline' })
+      require('outline').setup {
+        -- Your setup opts here (leave empty to use defaults)
+      }
+    end,
+  },
+  require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns',
