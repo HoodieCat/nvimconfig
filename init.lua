@@ -559,7 +559,7 @@ require('lazy').setup({
   --input method
   require 'kickstart.plugins.im-select',
   --lint for navagation
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.indent_line',
   -- { import = 'custom.plugins' },
   -- plugins with accustomed config
   -- require 'kickstart.plugins.lint',
