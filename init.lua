@@ -29,15 +29,12 @@ vim.opt.signcolumn = 'yes'
 vim.opt.updatetime = 250
 
 -- Decrease mapped sequence wait time
--- Displays which-key popup sooner
 vim.opt.timeoutlen = 300
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
@@ -55,6 +52,8 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+vim.keymap.set('n', '<M-j>', '<cmd>cnext<CR>', { desc = 'Next Quickfix' })
+vim.keymap.set('n', '<M-k>', '<cmd>cprevious<CR>', { desc = 'Previous Quickfix' })
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
@@ -314,6 +313,7 @@ require('lazy').setup({
         -- for you, so that they are available from within Neovim.
         -- the same as line 315 but use the default config
         'stylua', -- Used to format Lua code
+        'clang-format',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -366,6 +366,8 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        c = { 'clang-format' },
+        cpp = { 'clang-format' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -522,9 +524,15 @@ require('lazy').setup({
         vim.keymap.set(mode, key, cmd)
       end
       map('n', 'f', '<Plug>(leap)')
-      map('n', 'F', '<Plug>(leap-from-windows)')
+      map('n', 'F', '<Plug>(leap-backward)')
       map({ 'x', 'o' }, 'f', '<Plug>(leap-forward)')
       map({ 'x', 'o' }, 'F', '<Plug>(leap-backward)')
+
+      vim.keymap.set('n', 'f', function()
+        require('leap').leap {
+          target_windows = require('leap.user').get_focusable_windows(),
+        }
+      end)
     end,
   },
   --surround plugins
