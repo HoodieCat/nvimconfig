@@ -520,7 +520,7 @@ require('lazy').setup({
         -- config
       }
     end,
-    dependencies = { {'nvim-tree/nvim-web-devicons'}}
+    dependencies = { { 'nvim-tree/nvim-web-devicons' } },
   },
   --markdownpreview
   { require 'kickstart.plugins.markdown_preview' },
@@ -584,7 +584,9 @@ require('lazy').setup({
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
+  --git plugins
   require 'kickstart.plugins.gitsigns',
+  require 'kickstart.plugins.git-conflict',
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
