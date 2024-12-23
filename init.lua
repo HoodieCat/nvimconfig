@@ -524,7 +524,16 @@ require('lazy').setup({
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
   --dashboard
-  { 'nvimdev/dashboard-nvim' },
+  {
+    'nvimdev/dashboard-nvim',
+    event = 'VimEnter',
+    config = function()
+      require('dashboard').setup {
+        -- config
+      }
+    end,
+    dependencies = { {'nvim-tree/nvim-web-devicons'}}
+  },
   --markdownpreview
   { require 'kickstart.plugins.markdown_preview' },
   {
