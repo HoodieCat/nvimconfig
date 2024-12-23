@@ -21,7 +21,7 @@ vim.opt.undofile = true
 
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-
+vim.opt.wrap = true
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
 
@@ -54,11 +54,9 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 
 vim.keymap.set('n', '<M-j>', '<cmd>cnext<CR>', { desc = 'Next Quickfix' })
 vim.keymap.set('n', '<M-k>', '<cmd>cprevious<CR>', { desc = 'Previous Quickfix' })
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.opt.wrap = false
+vim.keymap.set('n','j','gj',{ desc = 'j as gj when wrapped'})
+vim.keymap.set('n','k','gk',{ desc = 'k as gk when wrapped'})
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -66,6 +64,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
 --lazy vim
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -564,7 +563,7 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
   --input method
-  -- require 'kickstart.plugins.im-select',
+  require 'kickstart.plugins.im-select',
   --navagation
   require 'kickstart.plugins.indent_line',
   -- { import = 'custom.plugins' },
