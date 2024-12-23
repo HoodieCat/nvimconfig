@@ -560,6 +560,8 @@ require('lazy').setup({
     'tpope/vim-surround',
     dependencies = 'tpope/vim-repeat',
   },
+  --enhance target select
+  'wellle/targets.vim',
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
   --input method
