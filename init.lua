@@ -285,12 +285,12 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {
-          command = { 'clangd', '--query-driver=/usr/bin/*' },
+          cmd = { 'clangd.exe', '--query-driver=C:\\Users\\李捷\\AppData\\Local\\nvim-data\\mason\\packages\\clangd\\clangd_19.1.2\\bin\\clangd.exe' },
         },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --    https://github.com/pmizio/typescript-tools.nvim
         lua_ls = {
-          -- cmd = {...},
+          cmd = { 'C:\\Users\\李捷\\AppData\\Local\\nvim-data\\mason\\packages\\lua-language-server\\bin\\lua-language-server.exe' },
           -- filetypes = { ...},
           -- capabilities = {},
           settings = {
@@ -327,6 +327,11 @@ require('lazy').setup({
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
+          -- ['lua_ls'] = function()
+          --   require('lspconfig').lua_ls.setup() {
+          --     cmd = { 'C:\\Users\\李捷\\AppData\\Local\\nvim-data\\mason\\packages\\stylua\\stylua.exe' },
+          --   }
+          -- end,
         },
       }
     end,
@@ -449,7 +454,7 @@ require('lazy').setup({
               luasnip.expand_or_jump()
             end
           end, { 'i', 's' }),
-          ['<M-h>'] = cmp.mapping(function()
+          ['<M-p>'] = cmp.mapping(function()
             if luasnip.locally_jumpable(-1) then
               luasnip.jump(-1)
             end
@@ -543,7 +548,7 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
   --input method
-  require 'kickstart.plugins.im-select',
+  -- require 'kickstart.plugins.im-select',
   --navagation
   require 'kickstart.plugins.indent_line',
   -- { import = 'custom.plugins' },
