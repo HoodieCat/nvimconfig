@@ -285,7 +285,7 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {
-          cmd = { 'clangd.exe', '--query-driver=C:\\Users\\李捷\\AppData\\Local\\nvim-data\\mason\\packages\\clangd\\clangd_19.1.2\\bin\\clangd.exe' },
+          cmd = { 'clangd.exe', '--query-driver=D:\\mingw64\\bin\\g++.exe' },
         },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -327,11 +327,6 @@ require('lazy').setup({
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
-          -- ['lua_ls'] = function()
-          --   require('lspconfig').lua_ls.setup() {
-          --     cmd = { 'C:\\Users\\李捷\\AppData\\Local\\nvim-data\\mason\\packages\\stylua\\stylua.exe' },
-          --   }
-          -- end,
         },
       }
     end,
@@ -378,6 +373,18 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      },
+      formatters = {
+        stylua = {
+          command = 'C:\\Users\\李捷\\AppData\\Local\\nvim-data\\mason\\packages\\stylua\\stylua.exe', -- 指定 stylua.exe 的路径
+          args = {
+            '--stdin-filepath',
+            '%:p', -- 当前文件路径
+            '--config-path',
+            '-', -- 从 stdin 读取
+          },
+          stdin = true, -- 从 stdin 提供输入
+        },
       },
     },
   },
