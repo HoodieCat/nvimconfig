@@ -546,10 +546,10 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   --input method
   require 'kickstart.plugins.im-select',
-  --navagation
+  --logic navagation
   require 'kickstart.plugins.indent_line',
   -- { import = 'custom.plugins' },
-  -- plugins with accustomed config
+  -- outline "Leader+o"
   {
     'hedyhli/outline.nvim',
     config = function()
@@ -558,6 +558,19 @@ require('lazy').setup({
         -- Your setup opts here (leave empty to use defaults)
       }
     end,
+  },
+  --Tabline
+  {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    opts = {},
+  },
+  --Statusline
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {},
   },
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
