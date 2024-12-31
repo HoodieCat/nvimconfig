@@ -19,6 +19,8 @@ vim.opt.smartindent = true
 -- Save undo history
 vim.opt.undofile = true
 
+--set shell 
+vim.opt.shell = 'pwsh'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.wrap = true
@@ -47,7 +49,7 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
-
+vim.api.nvim_set_keymap('t', '<Esc><Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
