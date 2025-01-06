@@ -291,7 +291,7 @@ require('lazy').setup({
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --    https://github.com/pmizio/typescript-tools.nvim
         lua_ls = {
-          cmd = { 'C:\\Users\\李捷\\AppData\\Local\\nvim-data\\mason\\packages\\lua-language-server\\bin\\lua-language-server.exe' },
+          cmd = { 'C:\\Users\\lijie\\AppData\\Local\\nvim-data\\mason\\packages\\lua-language-server\\bin\\lua-language-server.exe' },
           -- filetypes = { ...},
           -- capabilities = {},
           settings = {
@@ -377,7 +377,7 @@ require('lazy').setup({
       },
       formatters = {
         stylua = {
-          command = 'C:\\Users\\李捷\\AppData\\Local\\nvim-data\\mason\\packages\\stylua\\stylua.exe', -- 指定 stylua.exe 的路径
+          command = 'C:\\Users\\lijie\\AppData\\Local\\nvim-data\\mason\\packages\\stylua\\stylua.exe', -- 指定 stylua.exe 的路径
           args = {
             '--stdin-filepath',
             '%:p', -- 当前文件路径
