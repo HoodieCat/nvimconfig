@@ -90,7 +90,7 @@ return {
     vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = '[T]oggle breankpoint' })
     vim.keymap.set('n', '<leader>db', dap.clear_breakpoints, { desc = '[D]elete [B]reakpoints' })
     vim.keymap.set('n', '<leader>gc', dap.run_to_cursor, { desc = '[G]o to [C]ursor' })
-    vim.keymap.set('n', '<leader>?', function()
+    vim.keymap.set('n', 'K', function()
       require('dapui').eval(nil, { enter = true })
     end)
     --breakpoint icon
