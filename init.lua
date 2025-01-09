@@ -50,6 +50,8 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 vim.api.nvim_set_keymap('t', '<Esc><Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
+vim.opt.wrap = false
+
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<M-j>', '<cmd>cnext<CR>', { desc = 'Next Quickfix' })
@@ -157,19 +159,15 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>j', builtin.jumplist, { desc = '[J]ump lists' })
 
-      -- Slightly advanced example of overriding default behavior and theme
-      -- use <C-/> to search current buffer fuzzily
       vim.keymap.set('n', '<leader>/', function()
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 0,
+        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_ivy {
           previewer = false,
-          -- prompt_title = fuzzy find current buffer
+          prompt_title = 'fuzzy find current buffer',
         })
-      end, { desc = '[/] Fuzzily search in current buffer' })
+      end, { desc = '[/] Fuzzily search current buffer' })
 
-      -- It's also possible to pass additional configuration options.
-      --  See `:help telescope.builtin.live_grep()` for information about particular keys
       vim.keymap.set('n', '<leader>s/', function()
         builtin.live_grep {
           grep_open_files = true,
@@ -177,10 +175,14 @@ require('lazy').setup({
         }
       end, { desc = '[S]earch [/] in Open Files' })
 
-      -- Shortcut for searching your Neovim configuration files
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      vim.keymap.set('n', '<leader>sm', function()
+        local opts = { cwd = vim.fs.joinpath(vim.fn.stdpath 'data', 'lazy') }
+        builtin.find_files(require('telescope.themes').get_ivy(opts))
+      end, { desc = '[S]earch [M]odules' })
     end,
   },
 
@@ -296,7 +298,7 @@ require('lazy').setup({
               completion = {
                 callSnippet = 'Replace',
               },
-              diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = { disable = { 'missing-fields', 'unused-local', 'unused-function' } },
             },
           },
         },
@@ -313,9 +315,9 @@ require('lazy').setup({
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
+            -- this handles overriding only values explicitly passed
+            -- by the server configuration above. useful when disabling
+            -- certain features of an lsp (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
@@ -482,7 +484,6 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     opts = {
       ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'cpp', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
-      -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
         enable = true,
@@ -613,6 +614,3 @@ require('lazy').setup({
     },
   },
 })
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
