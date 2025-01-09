@@ -147,7 +147,8 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', function()
-        builtin.find_files { hidden = true }
+        local opts = require('telescope.themes').get_ivy { hidden = true }
+        require('telescope.builtin').find_files(opts)
       end, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
@@ -281,17 +282,15 @@ require('lazy').setup({
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {
           cmd = { 'clangd.exe', '--query-driver=D:\\mingw64\\bin\\g++.exe' },
         },
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --    https://github.com/pmizio/typescript-tools.nvim
         lua_ls = {
           cmd = { 'C:\\Users\\lijie\\AppData\\Local\\nvim-data\\mason\\packages\\lua-language-server\\bin\\lua-language-server.exe' },
           -- filetypes = { ...},
           -- capabilities = {},
+          --For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
           settings = {
             Lua = {
               completion = {
@@ -303,19 +302,13 @@ require('lazy').setup({
         },
       }
 
-      --  You can press `g?` for help in this menu.
       require('mason').setup()
-
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        -- You can add other tools here that you want Mason to install
-        -- for you, so that they are available from within Neovim.
-        -- the same as line 315 but use the default config
-        'stylua', -- Used to format Lua code
+        'stylua',
         'clang-format',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
@@ -589,7 +582,7 @@ require('lazy').setup({
         end
       end,
       open_mapping = [[<c-t>]],
-      direction = 'vertical',
+      direction = 'horizontal',
     },
   },
 
