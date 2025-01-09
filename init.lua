@@ -51,9 +51,7 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 vim.api.nvim_set_keymap('t', '<Esc><Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
--- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-
 vim.keymap.set('n', '<M-j>', '<cmd>cnext<CR>', { desc = 'Next Quickfix' })
 vim.keymap.set('n', '<M-k>', '<cmd>cprevious<CR>', { desc = 'Previous Quickfix' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
@@ -476,7 +474,6 @@ require('lazy').setup({
   },
 
   {
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
@@ -577,6 +574,23 @@ require('lazy').setup({
     config = function()
       require('colorizer').setup()
     end,
+  },
+  --terminal insode nvim
+  {
+    -- amongst your other plugins
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    opts = {
+      size = function(term)
+        if term.direction == 'horizontal' then
+          return 15
+        elseif term.direction == 'vertical' then
+          return vim.o.columns * 0.4
+        end
+      end,
+      open_mapping = [[<c-t>]],
+      direction = 'vertical',
+    },
   },
 
   require 'kickstart.plugins.lint',
