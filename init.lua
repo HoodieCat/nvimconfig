@@ -49,14 +49,9 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
--- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-
 vim.keymap.set('n', '<M-j>', '<cmd>cnext<CR>', { desc = 'Next Quickfix' })
 vim.keymap.set('n', '<M-k>', '<cmd>cprevious<CR>', { desc = 'Previous Quickfix' })
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.opt.wrap = false
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -463,7 +458,6 @@ require('lazy').setup({
   },
 
   {
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
@@ -565,6 +559,23 @@ require('lazy').setup({
       require('colorizer').setup()
     end,
   },
+  --terminal insode nvim
+  {
+    -- amongst your other plugins
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    opts = {
+      size = function(term)
+        if term.direction == 'horizontal' then
+          return 15
+        elseif term.direction == 'vertical' then
+          return vim.o.columns * 0.4
+        end
+      end,
+      open_mapping = [[<c-t>]],
+      direction = 'vertical',
+    },
+  },
 
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
@@ -573,6 +584,7 @@ require('lazy').setup({
   --git plugins
   require 'kickstart.plugins.gitsigns',
   require 'kickstart.plugins.git-conflict',
+  require 'kickstart.plugins.copilot',
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
