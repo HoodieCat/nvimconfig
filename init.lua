@@ -16,6 +16,7 @@ end)
 vim.opt.breakindent = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
+vim.opt.sw = 2
 -- Save undo history
 vim.opt.undofile = true
 
