@@ -138,7 +138,9 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+      vim.keymap.set('n', '<leader>sh', function()
+        builtin.help_tags(require('telescope.themes').get_dropdown { winblend = 20 })
+      end, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
@@ -158,13 +160,14 @@ require('lazy').setup({
       end, { desc = 'Current Buffers' })
 
       vim.keymap.set('n', '<leader>j', function()
-        local opts = { show_line = false, fname_width = 60 }
-        builtin.jumplist(opts)
+        local opts = { show_line = false }
+        builtin.jumplist(require('telescope.themes').get_dropdown(opts))
       end, { desc = '[J]ump lists' })
 
       vim.keymap.set('n', '<leader>/', function()
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_ivy {
           previewer = false,
+          layout_config = 'vertical',
           prompt_title = 'fuzzy find current buffer',
         })
       end, { desc = '[/] Fuzzily search current buffer' })
@@ -571,7 +574,6 @@ require('lazy').setup({
           return vim.o.columns * 0.4
         end
       end,
-      open_mapping = [[<c-t>]],
       direction = 'horizontal',
     },
   },
