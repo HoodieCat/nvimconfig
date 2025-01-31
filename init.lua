@@ -19,8 +19,21 @@ vim.opt.smartindent = true
 -- Save undo history
 vim.opt.undofile = true
 
---set shell 
+--set pwsh as the default shell on windows
 vim.opt.shell = 'pwsh'
+local powershell_options = {
+    shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
+    shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
+    shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
+    shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
+    shellquote = "",
+    shellxquote = "",
+}
+
+for option, value in pairs(powershell_options) do
+    vim.opt[option] = value
+end
+
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.wrap = true
@@ -78,19 +91,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-    },
-  },
-
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
@@ -132,6 +132,9 @@ require('lazy').setup({
     },
     config = function()
       require('telescope').setup {
+        defaults = {
+          path_display = { "truncate"},
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -144,7 +147,9 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+      vim.keymap.set('n', '<leader>sh', function()
+        builtin.help_tags(require('telescope.themes').get_dropdown{ winblend = 30})
+      end, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
@@ -576,9 +581,9 @@ require('lazy').setup({
       require('colorizer').setup()
     end,
   },
-  --terminal insode nvim
+  --terminal inside nvim
   {
-    -- amongst your other plugins
+    -- 
     'akinsho/toggleterm.nvim',
     version = '*',
     opts = {
@@ -589,17 +594,16 @@ require('lazy').setup({
           return vim.o.columns * 0.4
         end
       end,
-      open_mapping = [[<c-t>]],
+      open_mapping = [[<c-\>]],
       direction = 'horizontal',
     },
   },
-
+  --git plugins
+  require 'kickstart.plugins.gitsigns',
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.debug',
-  --git plugins
-  require 'kickstart.plugins.gitsigns',
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
