@@ -164,12 +164,16 @@ require('lazy').setup({
         builtin.jumplist(require('telescope.themes').get_dropdown(opts))
       end, { desc = '[J]ump lists' })
 
+      vim.keymap.set('n', '<leader>m', function()
+        require('telescope.builtin').marks()
+      end, { desc = '[G]o to [M]arks' })
       vim.keymap.set('n', '<leader>/', function()
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_ivy {
+        local opts = {
           previewer = false,
           layout_config = 'vertical',
           prompt_title = 'fuzzy find current buffer',
-        })
+        }
+        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_ivy { opts })
       end, { desc = '[/] Fuzzily search current buffer' })
 
       vim.keymap.set('n', '<leader>s/', function()
