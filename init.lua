@@ -530,12 +530,6 @@ require('lazy').setup({
       map('n', 'F', '<Plug>(leap-backward)')
       map({ 'x', 'o' }, 'f', '<Plug>(leap-forward)')
       map({ 'x', 'o' }, 'F', '<Plug>(leap-backward)')
-
-      vim.keymap.set('n', 'f', function()
-        require('leap').leap {
-          target_windows = require('leap.user').get_focusable_windows(),
-        }
-      end)
     end,
   },
   --surround plugins
