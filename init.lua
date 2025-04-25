@@ -1,18 +1,12 @@
--- See `:help mapleader`
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
--- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 vim.opt.number = true
 vim.opt.mouse = 'a'
--- Don't show the mode, since it's already in the status line
-vim.opt.showmode = false
 
 vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
--- Enable break indent
 vim.opt.breakindent = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
@@ -53,7 +47,7 @@ vim.opt.splitbelow = true
 
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+-- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -64,7 +58,6 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 vim.api.nvim_set_keymap('t', '<Esc><Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
-vim.opt.wrap = false
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -299,7 +292,7 @@ require('lazy').setup({
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       local servers = {
         clangd = {
-          cmd = { 'clangd.exe', '--query-driver=D:\\mingw64\\bin\\g++.exe' },
+          cmd = { 'C:\\Users\\lijie\\AppData\\Local\\nvim-data\\mason\\packages\\clangd\\clangd_20.1.0\\bin\\clangd.exe','--query-driver=C:\\Users\\lijie\\Downloads\\x86_64-14.2.0-release-mcf-seh-ucrt-rt_v12-rev0\\mingw64\\bin\\g++.exe'}
         },
         lua_ls = {
           cmd = { 'C:\\Users\\lijie\\AppData\\Local\\nvim-data\\mason\\packages\\lua-language-server\\bin\\lua-language-server.exe' },
@@ -526,10 +519,10 @@ require('lazy').setup({
       local map = function(mode, key, cmd)
         vim.keymap.set(mode, key, cmd)
       end
-      map('n', 'f', '<Plug>(leap)')
-      map('n', 'F', '<Plug>(leap-backward)')
-      map({ 'x', 'o' }, 'f', '<Plug>(leap-forward)')
-      map({ 'x', 'o' }, 'F', '<Plug>(leap-backward)')
+      -- map('n', 'f', '<Plug>(leap)')
+      -- map('n', 'F', '<Plug>(leap-backward)')
+      -- map({ 'x', 'o' }, 'f', '<Plug>(leap-forward)')
+      -- map({ 'x', 'o' }, 'F', '<Plug>(leap-backward)')
     end,
   },
   --surround plugins
@@ -545,8 +538,6 @@ require('lazy').setup({
   require 'kickstart.plugins.im-select',
   --logic navagation
   require 'kickstart.plugins.indent_line',
-  -- { import = 'custom.plugins' },
-  -- outline "Leader+o"
   {
     'hedyhli/outline.nvim',
     config = function()
@@ -589,7 +580,7 @@ require('lazy').setup({
           return vim.o.columns * 0.4
         end
       end,
-      open_mapping = [[<c-\>]],
+        open_mapping = [[<c-\>]],
       direction = 'horizontal',
     },
   },
@@ -599,24 +590,19 @@ require('lazy').setup({
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.debug',
-}, {
-  ui = {
-    -- If you are using a Nerd Font: set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
+  {-- lazy.nvim
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add any options here
     },
-  },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      "rcarriga/nvim-notify",
+      }
+  }
 })
